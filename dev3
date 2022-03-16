@@ -1,0 +1,69 @@
+# inclure  < stdio.h >
+# inclure  < stdlib.h >
+# inclure  < unistd.h >
+# inclure  < sys/wait.h >
+# inclure  < errno.h >
+# inclure  < sys/types.h >
+
+int  main ( int argc, char *argv[]){
+  int je ;
+  pid_t pid[ 4 ] ;
+  int fd[ 4 ][ 2 ], ret;
+  int ret = tube (fd[ 0 ]);
+  si (ret < 0 ){
+    fprintf (stderr, " Erreur de création du pipe ( %d ) \n " , errno);
+    retour  1 ;
+  }
+  pour (je = 0 ; je < 4 ; je++){
+    pid[i] = fourchette ();
+    si (pid[i]< 0 ){
+     // On gère l'erreur/
+      fprintf (stderr, " Erreur lors de la création du fils( %d ) \n " , errno);
+      retour  1 ;
+    }
+    si (pid[i] == 0 ){
+      char buffer[ 1 ] ;
+      /* Dans le fils */
+      fprintf (stdout, " Je suis ( %d ), mon père ( %d ) \n " , getpid (), getppid ());
+      ret = fermer (fd[i][ 1 ]);
+      si (ret < 0 ){
+        fprintf (stderr, " Fils ( %d ) impossible de fermer l'extrémité fd[1] du pipe ( %d ) \n " , getpid (), errno);
+        retour  1 ;
+      }
+      int ret = lire (fd[i][ 0 ], buffer, 1 );
+      si (ret < 0 ){
+        fprintf (stderr, " Fils ( %d ) impossible de lire sur fd[0] du pipe ( %d ) \n " , getpid (), errno);
+        retour  1 ;
+      }
+      fprintf (stdout, " < %s >, ( %d ) \n " , tampon, getpid ());
+      retourne  0 ;
+    }
+    sinon {
+
+    }
+  }
+  ret = fermer (fd[i][ 0 ]);
+  si (ret < 0 ){
+    fprintf (stderr, " Père ( %d ) impossible de fermer l'extrémité fd[0] du pipe ( %d ) \n " , getpid (), errno);
+    retour  1 ;
+  }
+  omble carac;
+  char strcarac[ 2 ] ;
+  tandis que ( 1 ){
+    scanf ( " %c " , &carac);
+    si (carac == ' \n ' )
+      continuer ;
+    sprintf (strcarac, " %c " , carac);
+    ret = écrire (fd[i][ 1 ], strcarac, 1 );
+    si (ret < 0 ){
+      fprintf (stdout, " Père ( %d ) impossible d'écrire sur fd[1] du pipe ( %d ) \n " , getpid (), errno);
+      retour  1 ;
+    }
+    si (carac == ' N ' )
+      Pause ;
+  }
+  pour (je = 0 ; je < 4 ; je++){
+      état entier ;
+      attendre (&statut);
+  }
+}
