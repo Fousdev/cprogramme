@@ -1,0 +1,74 @@
+# inclure  < sys/types.h >
+# inclure  < sys/stat.h >
+# inclure  < fcntl.h >
+# inclure  < unistd.h >
+# inclure  < stdio.h >
+# inclure  < stdlib.h >
+
+// fonction pour calculer le md5 des deux fichiers
+EVP_MD_CTX * getFileMD5 ( const  char * path )
+{
+    EVP_MD_CTX * ctx ;
+    // Initialisations du contexte ctx
+    FICHIER * f = fopen ( chemin , " rb " );
+    size_t bs = 0 ;
+    char buffer[ 2048 ]= " " ;
+
+    si ( !f ) retourne  NULL ;
+
+    while ( (bs= fread (buffer, 1 , sizeof buffer,f)) )
+    {
+        EVP_DigestUpdate (ctx, tampon, bs);
+    }
+
+    fermer ( f );
+    retour ctx ;
+}
+int  main ( int argc, char **argv)
+{
+int fd1, fd2, rc ;
+omble chevalier ;
+si (argc != 3 ) {
+fprintf (stderr, " Syntaxe : %s f1 f2 \n " , argv[ 0 ]);
+sortie ( 1 );
+}
+fd1 = ouvert (argv[ 1 ], O_RDONLY);
+si (fd1 < 0 ) {
+erreur ( " open(fd1) " );
+sortie ( 1 );
+}
+fd2 = ouvert (argv[ 2 ], O_WRONLY | O_CREAT | O_TRUNC, 0666 );
+si (fd2 < 0 ) {
+erreur ( " open(fd2) " );
+sortie ( 1 );
+}
+tandis que ( 1 ) {
+rc = lire (fd1, &buf, 1 );
+si (rc < 0 ) {
+erreur ( " read " );
+sortie ( 1 );
+}
+si (rc == 0 )
+Pause ;
+rc = écrire (fd2, &buf, 1 );
+si (rc < 0 ) {
+erreur ( " écrire " );
+sortie ( 1 );
+}
+si (rc != 1 ) {
+fprintf (stderr, " Écriture interrompue " );
+sortie ( 1 );
+}
+}
+// Vérifier si la copie est bien faite
+// comparaison des md5 des fihiers
+ if ( MD5File (fd1, &buffer)== MD5File (fd2, &buffer))
+    // envoi d'un message de confirmation du bon déroulement de la copie
+{
+     printf ( " Copie effectuée avec succès " )
+}
+
+fermer (fd1);
+fermer (fd2);
+retourne  0 ;
+}
