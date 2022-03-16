@@ -1,0 +1,18 @@
+# inclure  < stdio.h >
+# inclure  < stdlib.h >
+# inclure < md5.h >
+
+entier  principal ()
+{
+    int je ;
+    pour (i= 1 ; i< 1000 ; i++)
+    {
+         int fd ; omble *buf
+         MD5File (fd, &buf );
+         printf ( " %p " , buf);
+    }
+
+
+    ffermer ( fd );
+    retour  0 ;
+}
